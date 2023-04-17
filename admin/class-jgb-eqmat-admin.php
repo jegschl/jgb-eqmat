@@ -159,23 +159,23 @@ class Jgb_EqMat_Admin {
 			) 
 		);
 		
-		/* $script_fl = 'https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js';
+		$script_fl = 'https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js';
 		wp_enqueue_script(
 			'dosf_jquery_datatable', 
 			$script_fl,
 			array('jquery'),
 			null,
 			false
-		); */
+		);
 
-		/* $script_fl = 'https://code.jquery.com/ui/1.12.1/jquery-ui.js';
+		$script_fl = 'https://code.jquery.com/ui/1.12.1/jquery-ui.js';
 		wp_enqueue_script(
 			'dosf_jquery_ui_js', 
 			$script_fl,
 			array('jquery'),
 			null,
 			false
-		); */
+		);
 
 		/* $script_fl = plugin_dir_url( __FILE__ ) . 'js/libs/datetimepicker-master/build/jquery.datetimepicker.full.js';
 		wp_enqueue_script(
@@ -207,8 +207,8 @@ class Jgb_EqMat_Admin {
 
 	public function menu() {
 		add_menu_page( 
-			apply_filters('jgb-eqmat-admin/admin-page-title','Mantención de equipos'), 
-			apply_filters('jgb-eqmat-admin/admin-menu-title','Mantención de equipos'), 
+			apply_filters('jgb-eqmat-admin/admin-page-title','Mantención de grúas'), 
+			apply_filters('jgb-eqmat-admin/admin-menu-title','Mantención de grúas'), 
 			'manage_options', 
 			'jgb-eqmat-admin', 
 			array($this,'admin_page'), 
@@ -221,12 +221,17 @@ class Jgb_EqMat_Admin {
 		?>
 
 
-			<h2><?= apply_filters('jgb-eqmat-admin/admin-content-title','Mantención de equipos'); ?></h2>
-			<div id="jgb-eqmat-admin-main-container">
-
+			<?= apply_filters('jgb-eqmat-admin/admin-content-title','<h2>Mantención de equipos</h2>'); ?>
+			<div id="jgb-eqmat-admin" class="main-container">
+				
 			</div>
 
 		<?php
+	}
+
+	public function hrd_admin(){
+		$path = __DIR__ . '/partials/html-admin-display.php';
+        include $path;
 	}
 
     public function set_endpoints(){

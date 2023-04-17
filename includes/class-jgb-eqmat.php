@@ -122,7 +122,7 @@ class Jgb_EqMat {
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-jgb-eqmat-public.php';
+		//require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-jgb-eqmat-public.php';
 
 		$this->loader = new Jgb_EqMat_Loader();
 

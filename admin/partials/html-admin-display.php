@@ -11,6 +11,12 @@
  * @package    Jgb_EqMat
  * @subpackage Jgb_EqMat/admin/partials
  */
-?>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
+/**
+ * Admin View: Mantención de quipos
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
