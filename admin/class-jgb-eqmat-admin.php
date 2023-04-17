@@ -14,12 +14,6 @@
  define('JGB_EQMAT_APIREST_BASE_ROUTE','jgb-eqmat/');
  define('JGB_EQMAT_URI_ID_EQUIPMENTS','equipments');
 
- define('JGB_EQMAT_URI_ID_SEND_CUR_STATUS','send-download-code');
-
- define('JGB_EQMAT_NONCE_ACTION_PLUS_OPTS_UPDATE','update-plus-options');
- 
- define('JGB_EQMAT_PLUS_OPTS_UPDATE_ERR_INVALID_NONCE'	,1);
- define('JGB_EQMAT_PLUS_OPTS_UPDATE_ERR_DB'				,2);
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -62,6 +56,9 @@ class Jgb_EqMat_Admin {
 		$this->plugin_name 				 = $plugin_name;
 		$this->version 					 = $version;
 
+		add_action('jgb-eqmat-admin/main-content',[$this,'hrd_main_content']);
+		add_action('jgb-eqmat-admin/content-header',[$this,'hrd_header_buttons']);
+		add_action('jgb-eqmat-admin/before-content',[$this,'hrd_add_edt_frm']);
 	}
 
 	/**
@@ -69,7 +66,10 @@ class Jgb_EqMat_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles($hook) {
+
+		if( $hook != "toplevel_page_jgb-eqmat-admin" )
+			return;
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -211,26 +211,38 @@ class Jgb_EqMat_Admin {
 			apply_filters('jgb-eqmat-admin/admin-menu-title','Mantención de grúas'), 
 			'manage_options', 
 			'jgb-eqmat-admin', 
-			array($this,'admin_page'), 
+			array($this,'hrd_admin'), 
 			'dashicons-forms', 
 			11
 		);
 	}
 
-	public function admin_page(){
-		?>
+	public function hrd_admin(){
 
+		$path = __DIR__ . '/partials/html-admin-display.php';
 
-			<?= apply_filters('jgb-eqmat-admin/admin-content-title','<h2>Mantención de equipos</h2>'); ?>
-			<div id="jgb-eqmat-admin" class="main-container">
-				
-			</div>
-
-		<?php
+        include $path;
 	}
 
-	public function hrd_admin(){
-		$path = __DIR__ . '/partials/html-admin-display.php';
+	public function hrd_main_content(){
+
+		$path = __DIR__ . '/partials/html-eqmnt-dttbl.php';
+
+        include $path;
+	}
+
+	public function hrd_header_buttons(){
+
+		$path = __DIR__ . '/partials/html-eqmnt-buttons.php';
+
+        include $path;
+
+	}
+
+	public function hrd_add_edt_frm(){
+
+		$path = __DIR__ . '/partials/html-eqmnt-add-edt-frm.php';
+
         include $path;
 	}
 
