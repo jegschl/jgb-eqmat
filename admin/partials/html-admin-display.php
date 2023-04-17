@@ -20,3 +20,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+?>
+
+    <?= apply_filters('jgb-eqmat-admin/admin-content-title','<h2>Mantención de equipos</h2>'); ?>
+    <?= do_action('jgb-eqmat-admin/before-content'); ?>
+    <div id="jgb-eqmat-admin" class="main-container">
+        <div class="header">
+            <?= do_action('jgb-eqmat-admin/content-header'); ?>
+        </div>
+        
+        <div class="main-content">
+            <?= do_action('jgb-eqmat-admin/main-content'); ?>
+        </div>
+
+        <div class="footer">
+            <?= do_action('jgb-eqmat-admin/content-footer'); ?>
+        </div>
+    </div>
+    <?= do_action('jgb-eqmat-admin/after-content'); ?>
