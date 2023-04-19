@@ -85,13 +85,13 @@ class Jgb_EqMat_Admin {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/jgb-eqmat-admin.css', array(), $this->version, 'all' );
 		
-		/* wp_enqueue_style( 
+		wp_enqueue_style( 
 			'dosf_jquery_dtp_css', 
 			plugin_dir_url( __FILE__ ) . 'js/libs/datetimepicker-master/build/jquery.datetimepicker.min.css', 
 			array(),
 			null,
 			'all'
-		); */
+		);
 
 		/* wp_enqueue_style( 
 			'dosf_choices_base_css', 
@@ -101,29 +101,29 @@ class Jgb_EqMat_Admin {
 			'all'
 		); */
 
-		/* wp_enqueue_style( 
+		wp_enqueue_style( 
 			'dosf_choices_css', 
 			plugin_dir_url( __FILE__ ) . 'js/libs/choices-master/public/assets/styles/choices.min.css', 
 			array(),
 			null,
 			'all'
-		); */
+		);
 
-		/* wp_enqueue_style(
+		wp_enqueue_style(
 			'dosf_font_awesome',
 			'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css',
 			[],
 			null,
 			'all'
-		); */
+		);
 
-		/* wp_enqueue_style(
+		wp_enqueue_style(
 			'dosf_jquery_ui_css',
 			'https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css',
 			[],
 			null,
 			'all'
-		); */
+		);
 
 	}
 
@@ -161,7 +161,7 @@ class Jgb_EqMat_Admin {
 		
 		$script_fl = 'https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js';
 		wp_enqueue_script(
-			'dosf_jquery_datatable', 
+			'JGB_EQMAT_jquery_datatable', 
 			$script_fl,
 			array('jquery'),
 			null,
@@ -170,39 +170,39 @@ class Jgb_EqMat_Admin {
 
 		$script_fl = 'https://code.jquery.com/ui/1.12.1/jquery-ui.js';
 		wp_enqueue_script(
-			'dosf_jquery_ui_js', 
+			'JGB_EQMAT_jquery_ui_js', 
 			$script_fl,
 			array('jquery'),
 			null,
 			false
 		);
 
-		/* $script_fl = plugin_dir_url( __FILE__ ) . 'js/libs/datetimepicker-master/build/jquery.datetimepicker.full.js';
+		$script_fl = plugin_dir_url( __FILE__ ) . 'js/libs/datetimepicker-master/build/jquery.datetimepicker.full.js';
 		wp_enqueue_script(
-			'dosf_jquery_datatimepicker', 
+			'JGB_EQMAT_jquery_datatimepicker', 
 			$script_fl,
 			array('jquery'),
 			null,
 			false
-		); */
+		);
 
-		/* $script_fl = plugin_dir_url( __FILE__ ) . 'js/libs/choices-master/public/assets/scripts/choices.min.js';
+		$script_fl = plugin_dir_url( __FILE__ ) . 'js/libs/choices-master/public/assets/scripts/choices.min.js';
 		wp_enqueue_script(
-			'dosf_js_choice', 
+			'JGB_EQMAT_js_choice', 
 			$script_fl,
 			array(),
 			null,
 			false
-		); */
+		);
 
-		/* $script_fl = plugin_dir_url( __FILE__ ) . 'js/libs/blockui-2.70.0/jquery-blockUI.js';
+		$script_fl = plugin_dir_url( __FILE__ ) . 'js/libs/blockui-2.70.0/jquery-blockUI.js';
 		wp_enqueue_script(
-			'dosf_jq_blockUI', 
+			'JGB_EQMAT_jq_blockUI', 
 			$script_fl,
 			array('jquery'),
 			null,
 			false
-		); */
+		);
 	}
 
 	public function menu() {
@@ -339,86 +339,129 @@ class Jgb_EqMat_Admin {
 		
 	}
 
-	
+	public function get_eqpmnt_mp_where($search_value = null){
+		if(isset($search_value) && !empty($search_value)){
+            $where  = ' WHERE deleted != 0 AND ( serie LIKE "%'. $search_value . '%"';
+            $where .= ' OR model LIKE "%' . $search_value . '%"';
+            $where .= ' OR emails LIKE "%' . $search_value . '%" )';
+        } else {
+			$where  = ' WHERE deleted != 0';
+		}
+		return $where;
+	}
 
-	public function send_eqpmt_data($r){
+	public function get_maintenance_processes_count( $prmtrs = null){
 		global $wpdb;
-		
-		$limit = '';
-		if(isset($_GET['length']) && $_GET['length']>0)
-            $limit = ' LIMIT ' . $_GET['start'] . ',' . $_GET['length'];
-        
-		$where = '';
-        if(isset($_GET['search']['value']) && !empty($_GET['search']['value'])){
-            $sv = $_GET['search']['value'];
-            $where  = ' WHERE file_name LIKE "%'. $sv . '%"';
-            $where .= ' OR wdsrl.rut LIKE "%' . $sv . '%"';
-            $where .= ' OR title LIKE "%' . $sv . '%"';
-        }
+
+		$where = $this->get_eqpmnt_mp_where( $prmtrs['search']['value'] );
 
 		$isql = "SELECT SQL_CALC_FOUND_ROWS
-					wdso.id,
-					title,
-					file_name,
-					wp_file_obj_id,
-					GROUP_CONCAT(wdsrl.rut) AS linked_ruts,
-					email,
-					email2,
-					emision
-				FROM jgb-eqmat_shared_objs wdso 
-				JOIN jgb-eqmat_so_ruts_links wdsrl 
-					ON wdso.id = wdsrl.so_id 
-				$where 
-				GROUP BY wdso.id
-				$limit";
-		$qry = 'SELECT FOUND_ROWS() AS total_rcds';
+					*
+				FROM wp_eqmat_processes wep 
+				
+				$where";
+
+		$qry = 'SELECT FOUND_ROWS() AS total_records';
+
+		$wpdb->get_results($isql);
+		$row = $wpdb->get_row($qry, OBJECT);
+
+		if( isset($row->total_records) ){
+			return $row->total_records;
+		}
+
+		return 0;
+
+	}
+
+	public function get_eqpmnt_mp_orderby( $colsOrder = null ){
+		$orderBy = 'ORDER BY id';
+		if( !isset( $colsOrder ) ){
+			$orderBy = 'ORDER BY ';
+			$i = 0;
+			foreach( $colsOrder as $co ){
+				$orderBy .= $i > 0 ? ',':'';
+				$orderBy .= $co['column'] . ' ' . $co['sort'];
+			}
+		}
+
+		return $orderBy;
+	}
+
+	public function get_maintenance_processes( $prmtrs ){
+		global $wpdb;
+		$res = [];
+		$rows = [];
+		$limit = '';
+		if(isset($prmtrs['length']) && $prmtrs['length']>0)
+            $limit = ' LIMIT ' . $prmtrs['start'] . ',' . $prmtrs['length'];
 		
-		$sos = $wpdb->get_results($isql, OBJECT);
-		$frs = $wpdb->get_row($qry, OBJECT);
+		$where = $this->get_eqpmnt_mp_where($prmtrs['search']['value']);
+
+		$order = $this->get_eqpmnt_mp_orderby($prmtrs['order']);
+
+		$isql = "SELECT *
+				 FROM wp_eqmat_processes wep 
+				 $where
+				 $order
+				 $limit";
+
+		$rows = $wpdb->get_results( $isql );
+		if ( $wpdb->last_error ) {
+			$res['error'] = true;
+			$res['error_msg'] = $wpdb->last_error;
+		} else {
+			$res['error'] = false;
+			$res['data'] = $rows;
+		}
+
+		return $res;
+	}
+
+	public function send_eqpmt_data(){
+		
+		$eqmp = $this->get_maintenance_processes( $_GET );
         
 		$rc = array();
 
-        $row_data = [];
+        //$row_data = [];
 
-        foreach($sos as $c){
-            $row_data['attachment-id'] = $c->wp_file_obj_id;
-            $rc[] = array(
-				'DT_RowId'	  => $c->id,
-				'DT_RowData'  => $row_data,
-				'id'		  => $c->id,
-                'title'       => $c->title,
-                'file_name'   => $c->file_name,
-                'linked_ruts' => $c->linked_ruts,
-				'email'		  => $c->email,
-				'email2'	  => $c->email2,
-				'emision'	  => $c->emision,
-				'status'	  => self::get_dosf_status($c->emision),
-				'selection'	  => '',
-				'actions'	  => ''
+		if($eqmp['error']){
+			$res = array(
+                'draw' 				=> $_GET['draw'],
+                "recordsTotal" 		=> 0,
+                "recordsFiltered" 	=> 0,
+                'data' 				=> array(),
             );
-        }
-
-        if($sos && empty($wpdb->last_error) ){
-            $res = array(
-                'draw' => $_GET['draw'],
-                "recordsTotal" =>  intval($frs->total_rcds),
-                "recordsFiltered" => intval($frs->total_rcds),
-                'data' => $rc
-            );
-            $response = new WP_REST_Response( $res );
-            $response->set_status( 200 );
             
-        } else {
+		} else {
+			foreach($eqmp['data'] as $c){
+				//$row_data['attachment-id'] = $c->wp_file_obj_id;
+				$rc[] = array(
+					'DT_RowId'	  => $c->id,
+					//'DT_RowData'  => $row_data,
+					'id'		  => $c->id,
+					'serie'       => $c->serie,
+					'et_delivery' => $c->et_delivery,
+					'status' 	  => $c->status,
+					'model'		  => $c->model,
+					'emails'	  => $c->emails,
+					'active'	  => $c->active,
+					'selection'	  => '',
+					'actions'	  => ''
+				);
+			}
 			$res = array(
                 'draw' => $_GET['draw'],
-                "recordsTotal" =>  intval($frs->total_rcds),
-                "recordsFiltered" => intval($frs->total_rcds),
-                'data' => array(),
-				//'error' => new WP_Error( 'cant-read-dosf-sos', __( 'Can\'t get shared objects', 'jgb-eqmat' ), array( 'status' => 500 ) )
+                "recordsTotal" =>  $this->get_maintenance_processes_count(),
+                "recordsFiltered" => $this->get_maintenance_processes_count($_GET['search']['value']),
+                'data' => $rc
             );
-            $response = new WP_REST_Response( $res );
-            $response->set_status( 200 );
-        }
+		}
+
+		$response = new WP_REST_Response( $res );
+        $response->set_status( 200 );
+
         return $response;
 	}
 
