@@ -30,8 +30,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<th>Serie</th>
 						<th>Modelo</th>
 						<th>Entrega estimada</th>
-						<th>Area de competencia</th>
+						<th>Notificar a</th>
 						<th>Estado</th>
+						<th>Activo</th>
 						<th>Acciones</th>
 					</tr>
 				</thead>
@@ -44,8 +45,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<th>Serie</th>
 						<th>Modelo</th>
 						<th>Entrega estimada</th>
-						<th>Area de competencia</th>
+						<th>Notificar a</th>
 						<th>Estado</th>
+						<th>Activo</th>
 						<th>Acciones</th>
 					</tr>
 				</tfoot>

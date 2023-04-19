@@ -184,10 +184,6 @@
 					}
 				]
 			});
-			
-			var file_frame;
-			var wp_media_post_id = wp.media.model.settings.post.id;
-			var set_to_post_id;
 
 			function onDttblDraw(){
 				const itemActionReqSendDwldCodeSelector = '.action.send-dosf-download-code';
@@ -381,52 +377,6 @@
 				setWidgetsForDosfAddedOrCanceled();
 			});
 
-			$('.fld-so #browse-file').on('click', function( event ){
-
-				event.preventDefault();
-
-				// >Si el mediaframe existe, se abre este mismo.
-				if ( file_frame ) {
-					// Se establece el  post ID que esté previamente establecido
-					file_frame.uploader.uploader.param( 'post_id', set_to_post_id );
-					// Open frame
-					file_frame.open();
-					return;
-				} else {
-					// Set the wp.media post id so the uploader grabs the ID we want when initialised
-					wp.media.model.settings.post.id = set_to_post_id;
-				}
-
-				// Se crea el media frame.
-				file_frame = wp.media.frames.file_frame = wp.media({
-					title: 'Seleccionar archivo',
-					button: {
-						text: 'Asignar archivo',
-					},
-					multiple: false	// Se podría establecer a true para seleccionar varios archivos.
-				});
-
-				// Cuando un archivo es seleccionado, se ejecuta un callback.
-				file_frame.on( 'select', function() {
-					// Como se estableció múltiple a false solo se obtienen los datos de un solo archivo en el uploader
-					var attachment = file_frame.state().get('selection').first().toJSON();
-					
-					// Se almacena el attachment.id y el nombre del archivo.
-					$( '#dosf_attachment_id' ).val( attachment.id );
-					$( '#dosf-file-selectd' ).text(attachment.filename)
-					// Restaurando el post ID principal
-					wp.media.model.settings.post.id = wp_media_post_id;
-				});
-
-				// Finalmente, abriendo el selector de archivos en modal
-				file_frame.open();
-			});
-
-			// Restaurando el ID principal cuando el botón add media es presionado
-			$( 'a.add_media' ).on( 'click', function() {
-				wp.media.model.settings.post.id = wp_media_post_id;
-			});
-
 			function onDosfNewError( jqXHR, textStatus, errorThrown ){
 				dosfAddNewSentTryErrorCondMsg = 'Error al intentar enviar un nuevo dosf data set al server.';
 				console.log('Error al intentar enviar un nuevo dosf data set al server.');
@@ -517,62 +467,6 @@
 				$.ajax(ajxSettings);
 
 			});
-
-
-
-			function preparePlusOptions(){
-				var config = {
-					'nonce'							: $('#plus-options-update-nonce'),
-					'frontend-specific-match-search': $('#especific-match').is(':checked'),
-					'use-serial-number' 			: $('#use-serial-numbers').is(':checked'),
-					'use-issue-date'				: $('#use-issue-date').is(':checked'),
-					'expire-period-nmb'				: $('#expire-period-nmb').val(),
-					'expire-period-unit'			: $('#expire-period-unit').val()
-				};
-
-				return JSON.stringify(config);
-			}
-
-			function setPlusOptionsFieldsInProcessingMode(){
-				$( '#dosf-plus-options-save' ).prop("disabled","disabled");
-				$( '.dosf-plus-options-actions .processing' ).removeClass('hidden');
-			}
-
-			function setPlusOptionsFieldsInNormalMode(){
-				$( '#dosf-plus-options-save' ).prop("disabled",false);
-				$( '.dosf-plus-options-actions .processing' ).addClass('hidden');
-			}
-
-			$( '#dosf-plus-options-save' ).on('click',function(evnt){
-				setPlusOptionsFieldsInProcessingMode();
-
-				const cfg = preparePlusOptions();
-
-				// preparando la configuración de la llamada a endpoint para la configuración adicional.
-				var ajxSettings = {
-					url: dosf_config.urlUpdPlusOpts,
-					method:'POST',
-					accepts: 'application/json; charset=UTF-8',
-					contentType: 'application/json; charset=UTF-8',
-					data: cfg,
-					complete: function(jqXHR, textStatus){
-						setPlusOptionsFieldsInNormalMode();
-					},
-					success: function(data,  textStatus,  jqXHR){},
-					error: function(jqXHR, textStatus, errorThrown){
-						console.log('Error intentando enviar datos de opciones adicionales para almacenar en el servidor.');
-						console.log("Estos son los datos del error:");
-						console.log(errorThrown);
-						console.log(textStatus);
-					}
-				}
-
-				// Activando animación de proceso.
-
-				// ejecutando AJAX.
-				$.ajax(ajxSettings);
-				
-			});
 			
 			$('.dosf-admin-add-so .fields-wrapper #dosf_so_emision').datetimepicker(
 				{	
@@ -641,9 +535,9 @@
 				customAddItemText: 'Solo se permite agregar emails'
 			};
 
-			choiceEmlsColabs = new Choices($('#dosf_so_email')[0],choicesEmlsCfg);
+			//choiceEmlsColabs = new Choices($('#dosf_so_email')[0],choicesEmlsCfg);
 
-			choiceEmlsOprtrs = new Choices($('#dosf_so_email2')[0],choicesEmlsCfg);
+			//choiceEmlsOprtrs = new Choices($('#dosf_so_email2')[0],choicesEmlsCfg);
 
 
 		});
