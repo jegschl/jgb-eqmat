@@ -38,26 +38,39 @@
                 selection = 'checked';
             }
 
-            return '<input type="checkbox" ' + selection + ' class="dosf-checker"/>' ;
+            return '<input type="checkbox" ' + selection + ' class="em-mp-checker"/>' ;
         }
          
         return data;
     }
+
+	function actions_data_status(data, type){
+		if (type === 'display') {
+            let selection = '';
+            if(data == true){
+                selection = 'checked';
+            }
+
+            return '<input type="checkbox" ' + selection + ' class="em-mp-status-checker"/>' ;
+        }
+         
+        return data;
+	}
 
 	function actions_data_render(data, type){
 		if (type === 'display') {
 			var output = '';
 			output += '<div class="actions">';
 
-			output += '<div class="action edit-dosf">';
+			output += '<div class="action edit-em-mp">';
 			output += '<i class="fas fa-edit"></i>';
 			output += '</div>';
 
-			output += '<div class="action send-dosf-download-code">';
+			output += '<div class="action send-em-mp-status">';
 			output += '<i class="fas fa-paper-plane"></i>';
 			output += '</div>';
 
-			output += '<div class="action remove-dosf">';
+			output += '<div class="action remove-em-mp">';
 			output += '<i class="fas fa-minus-circle"></i>';
 			output += '</div>';
 
@@ -70,78 +83,69 @@
 
 	(function( $ ) {
 	'use strict';
+		const bluckUICOnfig = { css: { backgroundColor: '#f00', color: '#fff', 'border-radius': '10px', padding: '10px 0px' }, message: 'Procesando la solicitud...' };
+
+		let currentEditionDosfId;
+		let currentEditionDosfTR;
+		let dosfAddNewSentTryErrorCondMsg = '';
+		let delConfirmtnDlg;
+		let istr; // Ids to remove.
 		let choiceEmlsColabs;
 		let choiceEmlsOprtrs;
 		let dtColumns = [];
+		
+
 		dtColumns.push(
 			{
-				data: 'selection',
+				data: null,
 				render: selection_data_render
 			}
 		);
 
 		dtColumns.push(
 			{
-				data: 'title'
-			}
-		);
-
-		if(dosf_config.useIssueDate){
-			dtColumns.push(
-				{
-					data: 'emision'
-				}
-			);
-		}
-
-		dtColumns.push(
-			{
-				data: 'file_name'
+				data: 'serie'
 			}
 		);
 
 		dtColumns.push(
 			{
-				data: 'linked_ruts'
+				data: 'model'
+			}
+		);
+
+		
+		dtColumns.push(
+			{
+				data: 'et_delivery'
+			}
+		);
+		
+		dtColumns.push(
+			{
+				data: 'emails'
 			}
 		);
 
 		dtColumns.push(
 			{
-				data: 'email'
+				data: 'status',
+				render: actions_data_status
 			}
 		);
 
 		dtColumns.push(
 			{
-				data: 'email2'
+				data: 'active'
 			}
 		);
-
-		if(dosf_config.useIssueDate){
-			dtColumns.push(
-				{
-					data: 'status'
-				}
-			);
-		}
-
+		
 		dtColumns.push(
 			{
-				data: 'actions',
+				data: null,
 				render: actions_data_render
 			}
 		);
-
-		const JGB_JGB_EQMAT_AOE_FORM_MODE_ADD  = 0;
-		const JGB_JGB_EQMAT_AOE_FORM_MODE_EDIT = 1;
-		const bluckUICOnfig = { css: { backgroundColor: '#f00', color: '#fff', 'border-radius': '10px', padding: '10px 0px' }, message: 'Procesando la solicitud...' };
-		let aoeFormMode;
-		let currentEditionDosfId;
-		let currentEditionDosfTR;
-		let dosfAddNewSentTryErrorCondMsg = '';
-		let delConfirmtnDlg;
-		let istr; // Ids to remove.
 
 		function onDttblCreatedRow( row, data, dataIndex, cells ){
 			const atid = data['DT_RowData']['attachment-id'];
@@ -149,11 +153,11 @@
 		}
 
 		$(document).ready(function ($) {
-			//debugger;
-			dttbl = $('#tabla').DataTable( {
+
+			dttbl = $('#eqmnt-dttbl').DataTable( {
 				processing: true,
 				serverSide: true,
-				ajax: dosf_config.urlGetSOs,
+				ajax: JGB_EQMAT.urlEquipments,
 				language: {
 					url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/es-cl.json'
 				},
@@ -335,7 +339,6 @@
 			}
 
 			function setWidgetsForDosfAddNew(){
-				aoeFormMode = JGB_JGB_EQMAT_AOE_FORM_MODE_ADD;
 				currentEditionDosfId = null;
 				$('.dosf-admin-add-so > .title').text('Agregando certificado nuevo.');
 				$('.dosf-admin-header').hide();
@@ -345,7 +348,7 @@
 			}
 
 			function setWidgetsForDosfEdition(){
-				aoeFormMode = JGB_JGB_EQMAT_AOE_FORM_MODE_EDIT;
+
 				currentEditionDosfTR = $(this).closest('tr');
 				currentEditionDosfId = $(currentEditionDosfTR).attr('id');
 				$('.dosf-admin-add-so > .title').text('Modificando certificado con ID interno ' + currentEditionDosfId + '.');
