@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-		<div class="eqmnt-buttos">
+		<div class="eqmnt-buttons">
 			
 			<div id="add-eqmnt" class="action-wrapper"><span class="dashicons dashicons-plus-alt"></span>Agregar nueva Grúa en mantención</div>
 			<div id="rem-eqmnt" class="action-wrapper disabled"><span class="dashicons dashicons-dismiss"></span>Remover seleccionadas</div>
