@@ -86,7 +86,7 @@ class Jgb_EqMat_Admin {
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/jgb-eqmat-admin.css', array(), $this->version, 'all' );
 		
 		wp_enqueue_style( 
-			'dosf_jquery_dtp_css', 
+			'JGB_EQMAT_jquery_dtp_css', 
 			plugin_dir_url( __FILE__ ) . 'js/libs/datetimepicker-master/build/jquery.datetimepicker.min.css', 
 			array(),
 			null,
@@ -102,7 +102,7 @@ class Jgb_EqMat_Admin {
 		); */
 
 		wp_enqueue_style( 
-			'dosf_choices_css', 
+			'JGB_EQMAT_choices_css', 
 			plugin_dir_url( __FILE__ ) . 'js/libs/choices-master/public/assets/styles/choices.min.css', 
 			array(),
 			null,
@@ -110,7 +110,7 @@ class Jgb_EqMat_Admin {
 		);
 
 		wp_enqueue_style(
-			'dosf_font_awesome',
+			'JGB_EQMAT_font_awesome',
 			'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css',
 			[],
 			null,
@@ -118,7 +118,7 @@ class Jgb_EqMat_Admin {
 		);
 
 		wp_enqueue_style(
-			'dosf_jquery_ui_css',
+			'JGB_EQMAT_jquery_ui_css',
 			'https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css',
 			[],
 			null,
