@@ -3,32 +3,38 @@
  * included in this file.
  */
 
+ /* Estilo para Elementos principales de eq-mat. */
+ body.toplevel_page_jgb-eqmat-admin #wpbody-content > h2,
+ body.toplevel_page_jgb-eqmat-admin #wpbody-content > .eqmnt-item-add-edit,
+ body.toplevel_page_jgb-eqmat-admin #wpbody-content > #jgb-eqmat-admin{
+    padding-right: 20px;
+ }
 
-.dosf-admin-header .fa-plus-circle,
-.dosf-admin-header .dashicons-plus-alt{
+#jgb-eqmat-admin .header .fa-plus-circle,
+#jgb-eqmat-admin .header .dashicons-plus-alt{
     color: green;
     font-size: 20px ;
 }
 
-.dosf-admin-header .action-wrapper:hover .fa-plus-circle,
-.dosf-admin-header .action-wrapper:hover .dashicons-plus-alt{
+#jgb-eqmat-admin .header .action-wrapper:hover .fa-plus-circle,
+#jgb-eqmat-admin .header .action-wrapper:hover .dashicons-plus-alt{
     color: rgb(156, 255, 156);
     font-size: 20px ;
 }
 
-.dosf-admin-header .fa-minus-circle,
-.dosf-admin-header .dashicons-dismiss{
+#jgb-eqmat-admin .header .fa-minus-circle,
+#jgb-eqmat-admin .header .dashicons-dismiss{
     color: red;
     font-size: 20px ;
 }
 
-.dosf-admin-header .action-wrapper:hover .fa-minus-circle,
-.dosf-admin-header .action-wrapper:hover .dashicons-dismiss{
+#jgb-eqmat-admin .-header .action-wrapper:hover .fa-minus-circle,
+#jgb-eqmat-admin .header .action-wrapper:hover .dashicons-dismiss{
     color: rgb(253, 202, 202);
     font-size: 20px ;
 }
 
-.dosf-admin-header .fas{
+#jgb-eqmat-admin .header .fas{
     margin-right: 6px;
 }
 
@@ -47,7 +53,7 @@
     color: white;
 }
 
-.dosf-admin-header{
+#jgb-eqmat-admin .header{
     display: flex;
     justify-content: flex-start;
 }
@@ -65,7 +71,7 @@
     padding: 5px 0px;
 }
 
-.dosf-admin-header{
+#jgb-eqmat-admin .header{
     margin-bottom: 12px;
 }
 
