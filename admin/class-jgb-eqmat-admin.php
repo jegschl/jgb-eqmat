@@ -84,6 +84,9 @@ class Jgb_EqMat_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/jgb-eqmat-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/jgb-eqmat-header.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/jgb-eqmat-ae-frm.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/jgb-eqmat-dttbl.css', array(), $this->version, 'all' );
 		
 		wp_enqueue_style( 
 			'JGB_EQMAT_jquery_dtp_css', 

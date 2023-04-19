@@ -1,0 +1,72 @@
+#jgb-eqmat-admin .header .fa-plus-circle,
+#jgb-eqmat-admin .header .dashicons-plus-alt{
+    color: green;
+    font-size: 20px ;
+}
+
+#jgb-eqmat-admin .header .action-wrapper:hover .fa-plus-circle,
+#jgb-eqmat-admin .header .action-wrapper:hover .dashicons-plus-alt{
+    color: rgb(156, 255, 156);
+    font-size: 20px ;
+}
+
+#jgb-eqmat-admin .header .fa-minus-circle,
+#jgb-eqmat-admin .header .dashicons-dismiss{
+    color: red;
+    font-size: 20px ;
+}
+
+#jgb-eqmat-admin .header .action-wrapper:hover .fa-minus-circle,
+#jgb-eqmat-admin .header .action-wrapper:hover .dashicons-dismiss{
+    color: rgb(253, 202, 202);
+    font-size: 20px ;
+}
+
+#jgb-eqmat-admin .header .fas{
+    margin-right: 6px;
+}
+
+.eqmnt-buttons{
+    display: flex;
+
+}
+.action-wrapper{
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    cursor: default;
+    border: 2px solid #444;
+    padding: 5px 8px;
+    border-radius: 10px;
+}
+
+.action-wrapper:hover{
+    background-color: #246355;
+    color: white;
+}
+
+#jgb-eqmat-admin .header{
+    display: flex;
+    justify-content: flex-start;
+}
+
+#jgb-eqmat-admin .header{
+    margin-bottom: 12px;
+}
+
+.action-wrapper.disabled {
+    color: gray !important;
+}
+.action-wrapper.disabled .dashicons.dashicons-dismiss {
+    color: gray !important;
+}
+
+.action-wrapper.disabled:hover {
+	background-color: unset !important;
+}
+
+.actions-wrapper{
+    display: flex;
+    justify-content: flex-start;
+    padding: 5px 0px;
+}

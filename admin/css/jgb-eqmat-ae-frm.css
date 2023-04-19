@@ -1,0 +1,38 @@
+
+.fields-wrapper{
+    display:flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 5px 0px;
+}
+
+.dosf-admin-add-so {
+    padding: 20px 20px;
+    border: 1px gray solid;
+    border-radius: 5px;
+    margin: 20px 20px;
+    width: 50%;
+}
+
+.fld-so {
+    width: 100%;
+}
+.fld-email, fld-email2 {
+    width: 50%;
+}
+.fld-title label, .fld-emision label, .fld-ruts label {
+    display: block;
+}
+.fld-title, .fld-emision, .fld-ruts {
+    width: 30%;
+}
+
+.fld-so .file-selected{
+    display: inline-block;
+}
+
+.dosf-admin-add-so > .title{
+    font-weight: 600;
+    font-size: 14px;
+    padding: 5px 0px;
+}
