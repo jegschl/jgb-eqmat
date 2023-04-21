@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 				
 				<div class="fld-et-delivery">
-					<label>Emisión</label>
+					<label>Fecha de entrega estimada</label>
 					<input name="eqmnt-et-delivery" id="eqmnt-et-delivery" type="datetime" />
 				</div>
 				
