@@ -85,9 +85,9 @@
 	'use strict';
 		const bluckUICOnfig = { css: { backgroundColor: '#f00', color: '#fff', 'border-radius': '10px', padding: '10px 0px' }, message: 'Procesando la solicitud...' };
 
-		let currentEditionDosfId;
+		let currentEditionEmmpId;
 		let currentEditionDosfTR;
-		let dosfAddNewSentTryErrorCondMsg = '';
+		let emmpAddNewSentTryErrorCondMsg = '';
 		let delConfirmtnDlg;
 		let istr; // Ids to remove.
 		let choiceEmls;
@@ -187,7 +187,7 @@
 			function onDttblDraw(){
 				const itemActionReqSendDwldCodeSelector = '.action.send-dosf-download-code';
 				$(itemActionReqSendDwldCodeSelector).off('click');
-				$(itemActionReqSendDwldCodeSelector).on('click',dttblItemActionReqSendDownloadCodeEmail);
+				$(itemActionReqSendDwldCodeSelector).on('click',dttblItemActionReqSendSttsEmail);
 
 				const itemActionEditionCodeSelector = '.action.edit-dosf';
 				$(itemActionEditionCodeSelector).off('click');
@@ -231,7 +231,7 @@
 			function sendDosfRemovRequest(){
 				const ac = {
 					method: 'DELETE',
-					url: dosf_config.urlRemSO,
+					url: JGB_EQMAT.urlEquipments,
 					data: JSON.stringify({istr: istr}),
 					accepts: 'application/json; charset=UTF-8',
 					contentType: 'application/json; charset=UTF-8',
@@ -250,12 +250,12 @@
 				delConfirmtnDlg.dialog('open');
 			}
 
-			function dttblItemActionReqSendDownloadCodeEmail(){
+			function dttblItemActionReqSendSttsEmail(){
 				$.blockUI(bluckUICOnfig);
 				const dosf_id = $(this).parent().parent().parent().attr('id');
 				const ajxSettings = {
 					method: 'GET',
-					url: dosf_config.urlSndDC + dosf_id,
+					url: JGB_EQMAT.urlSndStts + dosf_id,
 					accepts: 'application/json; charset=UTF-8',
 					contentType: 'application/json; charset=UTF-8',
 					complete: onDosfReqSendDwldCdComplete,
@@ -328,7 +328,7 @@
 			}
 
 			function setWidgetsForEmmpAddNew(){
-				currentEditionDosfId = null;
+				currentEditionEmmpId = null;
 				$('.eqmnt-item-add-edit > .title').text('Agregando nuevo mantención de equipo.');
 				$('#jgb-eqmat-admin .eqmnt-buttons').hide();
 				$('#jgb-eqmat-admin .main-content').hide();
@@ -339,8 +339,8 @@
 			function setWidgetsForEmmpEdition(){
 
 				currentEditionDosfTR = $(this).closest('tr');
-				currentEditionDosfId = $(currentEditionDosfTR).attr('id');
-				$('.eqmnt-item-add-edit > .title').text('Modificando certificado con ID interno ' + currentEditionDosfId + '.');
+				currentEditionEmmpId = $(currentEditionDosfTR).attr('id');
+				$('.eqmnt-item-add-edit > .title').text('Modificando certificado con ID interno ' + currentEditionEmmpId + '.');
 				$('#jgb-eqmat-admin .eqmnt-buttons').hide();
 				$('#jgb-eqmat-admin .main-content').hide();
 				dumpDataToDosfAddFields();
@@ -348,12 +348,12 @@
 			}
 
 			function setWidgetsForEmmpAddedOrCanceled(){
-				if( dosfAddNewSentTryErrorCondMsg == '' ){
+				if( emmpAddNewSentTryErrorCondMsg == '' ){
 					$('.eqmnt-item-add-edit').hide();
 					$('#jgb-eqmat-admin .eqmnt-buttons').show();
 					$('#jgb-eqmat-admin .main-content').show();
 				} else {
-					$('eqmnt-item-add-edit .notice.notice-error').text(dosfAddNewSentTryErrorCondMsg);
+					$('eqmnt-item-add-edit .notice.notice-error').text(emmpAddNewSentTryErrorCondMsg);
 					if( $('eqmnt-item-add-edit .notice.notice-error').hasClass('hidden') ){
 						$('eqmnt-item-add-edit .notice.notice-error').removeClass('hidden')
 					}
@@ -366,37 +366,19 @@
 
 			$( '.actions-wrapper .cancel' ).on('click',function(event){
 				event.preventDefault();
-				dosfAddNewSentTryErrorCondMsg = '';
+				emmpAddNewSentTryErrorCondMsg = '';
 				setWidgetsForEmmpAddedOrCanceled();
 			});
 
-			function onDosfNewError( jqXHR, textStatus, errorThrown ){
-				dosfAddNewSentTryErrorCondMsg = 'Error al intentar enviar un nuevo dosf data set al server.';
-				console.log('Error al intentar enviar un nuevo dosf data set al server.');
-				console.log(jqXHR);
-			}
+			
 
-			function onDosfNewSuccess(  data,  textStatus,  jqXHR ){
+			
 
-				if( data['dosfAddNew_post_status'] == 'ok' ^ data['dosfUpdate_post_status'] == 'ok'){
-					dosfAddNewSentTryErrorCondMsg = '';
-					dttbl.ajax.reload();
-				}
-
-				if( data['dosfAddNew_post_status'] == 'error' && data['err_code'] == '403' ){
-					dosfAddNewSentTryErrorCondMsg = 'Ya existe un certificado con el mismo número de serie.'
-				}
-				
-			}
-
-			function onDosfNewComplete( jqXHR, textStatus ){
-				setWidgetsForEmmpAddedOrCanceled();
-				$.unblockUI();
-			}
+			
 
 			function setWidgetsForDosfSendingToServer(){
-				if( !$('.dosf-admin-add-so .notice.notice-error').hasClass('hidden') ){
-					$('.dosf-admin-add-so .notice.notice-error').addClass('hidden')
+				if( !$('.eqmnt-item-add-edit .notice.notice-error').hasClass('hidden') ){
+					$('.eqmnt-item-add-edit .notice.notice-error').addClass('hidden')
 				}
 			}
 
@@ -409,7 +391,7 @@
 
 			});
 
-			$( '.dosf-admin-add-so .actions-wrapper .save' ).on('click',function(event){
+			$( '.eqmnt-item-add-edit .actions-wrapper .save' ).on('click',function(event){
 				event.preventDefault();
 
 				$.blockUI(bluckUICOnfig); 
@@ -417,7 +399,7 @@
 				setWidgetsForDosfSendingToServer();
 
 				// enumerando ruts...
-				var ruts = $('#dosf_so_ruts_linked').val().split(',');
+				var ruts = $('#eqmnt-ruts').val().split(',');
 				var rutsCount = ruts.length;
 
 				// retirar puntos y guiones.
@@ -426,31 +408,45 @@
 				}
 
 				// crear datos para enviar.
-				var dosfNewData = {
-					'wp_obj_file_id': 	$('#dosf_attachment_id').val(),
-					'file_name': 		$( '#dosf-file-selectd' ).text(),
-					'linked_ruts': 		ruts,
-					'title': 			$('#dosf_so_title').val(),
-					'email': 			choiceEmls.getValue(true),
-					'updateId': 		currentEditionDosfId 
+				var emmpData = {
+					'serie'		 :		$('#eqmnt-serie').val(),
+					'model'		 :		$('#eqmnt-model').val(),
+					'et-delivery':		$('#eqmnt-et-delivery').val(),
+					'ruts'		 : 		ruts,
+					'emails'	 : 		choiceEmls.getValue(true),
+					'updateId'	 : 		currentEditionEmmpId 
 				};
-
-				if(dosf_config.useIssueDate){
-					dosfNewData.emision = $('#dosf_so_emision').val();
-				}
 
 				// pendiente agregar validaciones.
 
 				// preparando la configuración de la llamada a endpoint para crear nuevo dosf.
 				var ajxSettings = {
-					url: dosf_config.urlAddSO,
+					url: JGB_EQMAT.urlEquipments,
 					method:'POST',
 					accepts: 'application/json; charset=UTF-8',
 					contentType: 'application/json; charset=UTF-8',
-					data: JSON.stringify(dosfNewData),
-					complete: onDosfNewComplete,
-					success: onDosfNewSuccess,
-					error: onDosfNewError
+					data: JSON.stringify(emmpData),
+					complete: function( jqXHR, textStatus ){
+						setWidgetsForEmmpAddedOrCanceled();
+						$.unblockUI();
+					},
+					success: function(  data,  textStatus,  jqXHR ){
+
+						if( data['emmpAddNew_post_status'] == 'ok' ^ data['dosfUpdate_post_status'] == 'ok'){
+							emmpAddNewSentTryErrorCondMsg = '';
+							dttbl.ajax.reload();
+						}
+		
+						if( data['emmpAddNew_post_status'] == 'error' && data['err_code'] == '403' ){
+							emmpAddNewSentTryErrorCondMsg = 'Ya existe un proceso de mantención con el mismo número de serie.'
+						}
+						
+					},
+					error: function( jqXHR, textStatus, errorThrown ){
+						emmpAddNewSentTryErrorCondMsg = 'Error al intentar enviar los datos de un nuevo proceso de mantención al server.';
+						console.log('Error al intentar enviar los datos de un nuevo proceso de mantención al server.');
+						console.log(jqXHR);
+					}
 				}
 
 				// Activando animación de proceso.
