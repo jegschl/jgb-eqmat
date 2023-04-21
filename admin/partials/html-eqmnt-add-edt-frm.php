@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-		<div class="eqmnt-item-add-edit" style="display: none;">
+		<div class="eqmnt-item-add-edit hidden">
 			<div class="title"></div>
 			<div class="fields-wrapper">
 				<div class="fld-serie">
