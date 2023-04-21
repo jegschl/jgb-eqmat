@@ -398,21 +398,12 @@
 
 				setWidgetsForDosfSendingToServer();
 
-				// enumerando ruts...
-				var ruts = $('#eqmnt-ruts').val().split(',');
-				var rutsCount = ruts.length;
-
-				// retirar puntos y guiones.
-				for(var i=0; i<rutsCount; i++){
-					ruts[i] = ruts[i].replace(/\.|\-/g,'');
-				}
-
 				// crear datos para enviar.
 				var emmpData = {
 					'serie'		 :		$('#eqmnt-serie').val(),
 					'model'		 :		$('#eqmnt-model').val(),
 					'et-delivery':		$('#eqmnt-et-delivery').val(),
-					'ruts'		 : 		ruts,
+					'status'	 : 		ruts,
 					'emails'	 : 		choiceEmls.getValue(true),
 					'updateId'	 : 		currentEditionEmmpId 
 				};
