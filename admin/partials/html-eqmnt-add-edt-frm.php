@@ -41,15 +41,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 				
 
-				<div class="fld-ruts"> 
-					<label>RUTs asociados</label>
-					<input 
-						type="text" 
-						id="eqmnt-ruts"
-						name="eqmnt-ruts"
-						placeholder="Separar RUTs con comas y sin puntos ni guiones"
+				<div class="fld-status"> 
+					<label>Estado de la manteción</label>
+					<select
+						id="eqmnt-status"
+						name="eqmnt-status"
 					>
+						<option value="EPM">En proceso</option>
+						<option value="LPE">Listo para entrega</option>
+					</select>
 				</div>
+				
 				<div class="fld-email"> 
 					<label>Emails</label>
 					<input 
