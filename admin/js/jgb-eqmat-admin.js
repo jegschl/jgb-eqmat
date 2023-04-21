@@ -90,8 +90,7 @@
 		let dosfAddNewSentTryErrorCondMsg = '';
 		let delConfirmtnDlg;
 		let istr; // Ids to remove.
-		let choiceEmlsColabs;
-		let choiceEmlsOprtrs;
+		let choiceEmls;
 		let dtColumns = [];
 		
 
@@ -192,7 +191,7 @@
 
 				const itemActionEditionCodeSelector = '.action.edit-dosf';
 				$(itemActionEditionCodeSelector).off('click');
-				$(itemActionEditionCodeSelector).on('click',setWidgetsForDosfEdition);
+				$(itemActionEditionCodeSelector).on('click',setWidgetsForEmmpEdition);
 
 				const itemActionReqRemoveCodeSelector = '.action.remove-dosf';
 				$(itemActionReqRemoveCodeSelector).off('click');
@@ -284,14 +283,13 @@
 				console.log(jqXHR);
 			}
 
-			function resetDosfAddFields(){
-				$( '#dosf_so_ruts_linked' ).val('');
-				$( '#dosf_attachment_id').val(''),
-				$( '#dosf_so_emision' ).val('');
-				$( '#dosf-file-selectd' ).text(''),
-				$( '#dosf_so_title' ).val('')
-				choiceEmlsColabs.clearStore();
-				choiceEmlsOprtrs.clearStore();
+			function resetEmmpAddFields(){
+				$( '#eqmnt-serie' ).val('');
+				$( '#eqmnt-model').val(''),
+				$( '#eqmnt-et-delivery' ).val('');
+				$( '#eqmnt-ruts' ).text(''),
+				choiceEmls.clearStore();
+
 				
 				if( !$('.dosf-admin-add-so .notice.notice-error').hasClass('hidden') ){
 					$('.dosf-admin-add-so .notice.notice-error').addClass('hidden')
@@ -313,13 +311,8 @@
 
 				cell = $(currentEditionDosfTR).children()[5];
 				vl 	 = $(cell).text().split(',');
-				choiceEmlsColabs.clearStore();
-				choiceEmlsColabs.setValue(vl);
-
-				cell = $(currentEditionDosfTR).children()[6];
-				vl 	 = $(cell).text().split(',');
-				choiceEmlsOprtrs.clearStore();
-				choiceEmlsOprtrs.setValue(vl);
+				choiceEmls.clearStore();
+				choiceEmls.setValue(vl);
 
 
 				$( '#dosf_attachment_id').val( $(currentEditionDosfTR).data('attachment-id') );
@@ -334,47 +327,47 @@
 				
 			}
 
-			function setWidgetsForDosfAddNew(){
+			function setWidgetsForEmmpAddNew(){
 				currentEditionDosfId = null;
-				$('.dosf-admin-add-so > .title').text('Agregando certificado nuevo.');
-				$('.dosf-admin-header').hide();
-				$('#dosf-data-tbl').hide();
-				resetDosfAddFields();
-				$('.dosf-admin-add-so').show();
+				$('.eqmnt-item-add-edit > .title').text('Agregando nuevo mantención de equipo.');
+				$('#jgb-eqmat-admin .eqmnt-buttons').hide();
+				$('#jgb-eqmat-admin .main-content').hide();
+				resetEmmpAddFields();
+				$('.eqmnt-item-add-edit').show();
 			}
 
-			function setWidgetsForDosfEdition(){
+			function setWidgetsForEmmpEdition(){
 
 				currentEditionDosfTR = $(this).closest('tr');
 				currentEditionDosfId = $(currentEditionDosfTR).attr('id');
-				$('.dosf-admin-add-so > .title').text('Modificando certificado con ID interno ' + currentEditionDosfId + '.');
-				$('.dosf-admin-header').hide();
-				$('#dosf-data-tbl').hide();
+				$('.eqmnt-item-add-edit > .title').text('Modificando certificado con ID interno ' + currentEditionDosfId + '.');
+				$('#jgb-eqmat-admin .eqmnt-buttons').hide();
+				$('#jgb-eqmat-admin .main-content').hide();
 				dumpDataToDosfAddFields();
-				$('.dosf-admin-add-so').show();
+				$('.eqmnt-item-add-edit').show();
 			}
 
-			function setWidgetsForDosfAddedOrCanceled(){
+			function setWidgetsForEmmpAddedOrCanceled(){
 				if( dosfAddNewSentTryErrorCondMsg == '' ){
-					$('.dosf-admin-add-so').hide();
-					$('.dosf-admin-header').show();
-					$('#dosf-data-tbl').show();
+					$('.eqmnt-item-add-edit').hide();
+					$('#jgb-eqmat-admin .eqmnt-buttons').show();
+					$('#jgb-eqmat-admin .main-content').show();
 				} else {
-					$('.dosf-admin-add-so .notice.notice-error').text(dosfAddNewSentTryErrorCondMsg);
-					if( $('.dosf-admin-add-so .notice.notice-error').hasClass('hidden') ){
-						$('.dosf-admin-add-so .notice.notice-error').removeClass('hidden')
+					$('eqmnt-item-add-edit .notice.notice-error').text(dosfAddNewSentTryErrorCondMsg);
+					if( $('eqmnt-item-add-edit .notice.notice-error').hasClass('hidden') ){
+						$('eqmnt-item-add-edit .notice.notice-error').removeClass('hidden')
 					}
 				}
 			}
 
-			$( '.dosf-admin-header #add-dosf' ).on('click',function(event){
-				setWidgetsForDosfAddNew();
+			$( '#jgb-eqmat-admin #add-eqmnt' ).on('click',function(event){
+				setWidgetsForEmmpAddNew();
 			});
 
 			$( '.actions-wrapper .cancel' ).on('click',function(event){
 				event.preventDefault();
 				dosfAddNewSentTryErrorCondMsg = '';
-				setWidgetsForDosfAddedOrCanceled();
+				setWidgetsForEmmpAddedOrCanceled();
 			});
 
 			function onDosfNewError( jqXHR, textStatus, errorThrown ){
@@ -397,7 +390,7 @@
 			}
 
 			function onDosfNewComplete( jqXHR, textStatus ){
-				setWidgetsForDosfAddedOrCanceled();
+				setWidgetsForEmmpAddedOrCanceled();
 				$.unblockUI();
 			}
 
@@ -438,8 +431,7 @@
 					'file_name': 		$( '#dosf-file-selectd' ).text(),
 					'linked_ruts': 		ruts,
 					'title': 			$('#dosf_so_title').val(),
-					'email': 			choiceEmlsColabs.getValue(true),
-					'email2': 			choiceEmlsOprtrs.getValue(true),
+					'email': 			choiceEmls.getValue(true),
 					'updateId': 		currentEditionDosfId 
 				};
 
@@ -535,9 +527,7 @@
 				customAddItemText: 'Solo se permite agregar emails'
 			};
 
-			//choiceEmlsColabs = new Choices($('#dosf_so_email')[0],choicesEmlsCfg);
-
-			//choiceEmlsOprtrs = new Choices($('#dosf_so_email2')[0],choicesEmlsCfg);
+			choiceEmls = new Choices($('#eqmnt-email')[0],choicesEmlsCfg);
 
 
 		});
