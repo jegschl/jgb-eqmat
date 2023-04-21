@@ -403,7 +403,7 @@
 					'serie'		 :		$('#eqmnt-serie').val(),
 					'model'		 :		$('#eqmnt-model').val(),
 					'et-delivery':		$('#eqmnt-et-delivery').val(),
-					'status'	 : 		ruts,
+					'status'	 : 		$('#eqmnt-status').val(),
 					'emails'	 : 		choiceEmls.getValue(true),
 					'updateId'	 : 		currentEditionEmmpId 
 				};
