@@ -447,7 +447,7 @@
 
 			});
 			
-			$('.dosf-admin-add-so .fields-wrapper #dosf_so_emision').datetimepicker(
+			$('.eqmnt-item-add-edit .fields-wrapper #eqmnt-et-delivery').datetimepicker(
 				{	
 					format: 'Y-m-d H:i',
 					lang: 'es',
