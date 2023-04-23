@@ -435,7 +435,7 @@ class Jgb_EqMat_Admin {
         
 		$rc = array();
 
-        //$row_data = [];
+        $row_data = [];
 
 		if($eqmp['error']){
 			$res = array(
@@ -447,10 +447,10 @@ class Jgb_EqMat_Admin {
             
 		} else {
 			foreach($eqmp['data'] as $c){
-				//$row_data['attachment-id'] = $c->wp_file_obj_id;
+				$row_data['emmp-raw-status'] = $c->status;
 				$rc[] = array(
 					'DT_RowId'	  => $c->id,
-					//'DT_RowData'  => $row_data,
+					'DT_RowData'  => $row_data,
 					'id'		  => $c->id,
 					'serie'       => $c->serie,
 					'et_delivery' => $c->et_delivery,
@@ -520,7 +520,7 @@ class Jgb_EqMat_Admin {
 			);
 
 			$mail_sent_res = '';
-			if( $upd_res > 0 && ($beforeUpdStts != $data['status'])){
+			if( $upd_res > 0 && ($beforeUpdStts['equipment_maintenance_status'] != $data['status'])){
 				$mail_sent_res = $this->send_current_status_email($data['updateId']);
 			}
 			

@@ -153,8 +153,8 @@
 		);
 
 		function onDttblCreatedRow( row, data, dataIndex, cells ){
-			const atid = data['DT_RowData']['attachment-id'];
-			$(row).data('attachment-id',atid);
+			const atid = data['DT_RowData']['emmp-raw-status'];
+			$(row).data('emmp-raw-status',atid);
 		}
 
 		$(document).ready(function ($) {
@@ -167,8 +167,8 @@
 					url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/es-cl.json'
 				},
 				columns: dtColumns,
-				drawCallback: onDttblDraw
-				//createdRow: onDttblCreatedRow
+				drawCallback: onDttblDraw,
+				createdRow: onDttblCreatedRow
 			} );	
 
 			delConfirmtnDlg = $('#confirm-del-dlg').dialog({
@@ -302,33 +302,30 @@
 				}
 			}
 
-			function dumpDataToDosfAddFields(){
-				let cell = $(currentEditionDosfTR).children()[1];
+			function dumpDataToEmmpAddFields(){
+				let cell = $(currentEditionDosfTR).children()[1]; //serie
 				let vl 	 = $(cell).text();
-				$( '#dosf_so_title' ).val(vl);
+				$( '#eqmnt-serie' ).val(vl);
 
-				cell = $(currentEditionDosfTR).children()[2];
+				cell = $(currentEditionDosfTR).children()[2]; //model
 				vl 	 = $(cell).text();
-				$( '#dosf_so_emision' ).val(vl);
+				$( '#eqmnt-model' ).val(vl);
 
-				cell = $(currentEditionDosfTR).children()[4];
+				cell = $(currentEditionDosfTR).children()[3]; //et_delivery
 				vl 	 = $(cell).text();
-				$( '#dosf_so_ruts_linked' ).val(vl);
+				$( '#eqmnt-et-delivery' ).val(vl);
 
-				cell = $(currentEditionDosfTR).children()[5];
+				cell = $(currentEditionDosfTR).children()[4]; //emails
 				vl 	 = $(cell).text().split(',');
 				choiceEmls.clearStore();
 				choiceEmls.setValue(vl);
 
 
-				$( '#dosf_attachment_id').val( $(currentEditionDosfTR).data('attachment-id') );
-
-				cell = $(currentEditionDosfTR).children()[3];
-				vl 	 = $(cell).text();
-				$( '#dosf-file-selectd' ).text(vl);
+				vl = $(currentEditionDosfTR).data('emmp-raw-status'); //status
+				$('#eqmnt-status option[value="'+vl+'"]').prop('selected', true);
 				
-				if( !$('.dosf-admin-add-so .notice.notice-error').hasClass('hidden') ){
-					$('.dosf-admin-add-so .notice.notice-error').addClass('hidden')
+				if( !$('.eqmnt-item-add-edit .notice.notice-error').hasClass('hidden') ){
+					$('.eqmnt-item-add-edit .notice.notice-error').addClass('hidden')
 				}
 				
 			}
@@ -346,10 +343,10 @@
 
 				currentEditionDosfTR = $(this).closest('tr');
 				currentEditionEmmpId = $(currentEditionDosfTR).attr('id');
-				$('.eqmnt-item-add-edit > .title').text('Modificando certificado con ID interno ' + currentEditionEmmpId + '.');
+				$('.eqmnt-item-add-edit > .title').text('Modificando manteción de equipo/vehículo con ID interno ' + currentEditionEmmpId + '.');
 				$('#jgb-eqmat-admin .eqmnt-buttons').hide();
 				$('#jgb-eqmat-admin .main-content').hide();
-				dumpDataToDosfAddFields();
+				dumpDataToEmmpAddFields();
 				$('.eqmnt-item-add-edit').show();
 			}
 
