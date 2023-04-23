@@ -205,31 +205,31 @@
 
 				const itemDosfCheckerSelector = '.em-mp-checker';
 				$(itemDosfCheckerSelector).off('click');
-				$(itemDosfCheckerSelector).on('click',dttblItemDosfChecker);
+				$(itemDosfCheckerSelector).on('click',dttblItemEmmpChecker);
 			}
 
-			function dttblItemDosfChecker(){
+			function dttblItemEmmpChecker(){
 				let i;
 				istr = [];
-				let dcdAr = $('.dosf-checker');
+				let dcdAr = $('.em-mp-checker');
 				if( dcdAr.length > 0 ){
 					for( i = 0; i < dcdAr.length; i++ ){
 						if( $( dcdAr[i] ).is(":checked") )
 							istr.push(  $( dcdAr[i] ).closest('tr').attr('id') );
 					}
 					if( istr.length > 0 ){
-						if( $('#rem-dosf').hasClass('disabled') ){
-							$('#rem-dosf').removeClass('disabled');
+						if( $('#rem-eqmnt').hasClass('disabled') ){
+							$('#rem-eqmnt').removeClass('disabled');
 						}
 						
 					} else {
-						if( !$('#rem-dosf').hasClass('disabled') ){
-							$('#rem-dosf').addClass('disabled');
+						if( !$('#rem-eqmnt').hasClass('disabled') ){
+							$('#rem-eqmnt').addClass('disabled');
 						}
 					}
 				}else{
-					if( !$('#rem-dosf').hasClass('disabled') ){
-						$('#rem-dosf').addClass('disabled');
+					if( !$('#rem-eqmnt').hasClass('disabled') ){
+						$('#rem-eqmnt').addClass('disabled');
 					}
 				}
 			}
