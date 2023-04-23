@@ -46,12 +46,18 @@
 
 	function actions_data_status(data, type){
 		if (type === 'display') {
-            let selection = '';
-            if(data == true){
-                selection = 'checked';
-            }
+            let msg = '';
+            switch (data) {
+				case 'LPE':
+					msg = 'Lista para entrega';
+					break;
+			
+				default: // EPM
+					msg = 'Mantención en proceso';
+					break;
+			}
 
-            return '<input type="checkbox" ' + selection + ' class="em-mp-status-checker"/>' ;
+            return msg;
         }
          
         return data;
@@ -161,8 +167,8 @@
 					url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/es-cl.json'
 				},
 				columns: dtColumns,
-				drawCallback: onDttblDraw,
-				createdRow: onDttblCreatedRow
+				drawCallback: onDttblDraw
+				//createdRow: onDttblCreatedRow
 			} );	
 
 			delConfirmtnDlg = $('#confirm-del-dlg').dialog({
@@ -185,19 +191,19 @@
 			});
 
 			function onDttblDraw(){
-				const itemActionReqSendDwldCodeSelector = '.action.send-dosf-download-code';
-				$(itemActionReqSendDwldCodeSelector).off('click');
-				$(itemActionReqSendDwldCodeSelector).on('click',dttblItemActionReqSendSttsEmail);
+				const itemActionReqSendCurSttsSelector = '.action.send-em-mp-status';
+				$(itemActionReqSendCurSttsSelector).off('click');
+				$(itemActionReqSendCurSttsSelector).on('click',dttblItemActionReqSendSttsEmail);
 
-				const itemActionEditionCodeSelector = '.action.edit-dosf';
+				const itemActionEditionCodeSelector = '.action.edit-em-mp';
 				$(itemActionEditionCodeSelector).off('click');
 				$(itemActionEditionCodeSelector).on('click',setWidgetsForEmmpEdition);
 
-				const itemActionReqRemoveCodeSelector = '.action.remove-dosf';
+				const itemActionReqRemoveCodeSelector = '.action.remove-em-mp';
 				$(itemActionReqRemoveCodeSelector).off('click');
 				$(itemActionReqRemoveCodeSelector).on('click',dttblItemActionReqRemoveDosf);
 
-				const itemDosfCheckerSelector = '.dosf-checker';
+				const itemDosfCheckerSelector = '.em-mp-checker';
 				$(itemDosfCheckerSelector).off('click');
 				$(itemDosfCheckerSelector).on('click',dttblItemDosfChecker);
 			}
@@ -255,7 +261,7 @@
 				const dosf_id = $(this).parent().parent().parent().attr('id');
 				const ajxSettings = {
 					method: 'GET',
-					url: JGB_EQMAT.urlSndStts + dosf_id,
+					url: JGB_EQMAT.baseUrlSendStatus + dosf_id,
 					accepts: 'application/json; charset=UTF-8',
 					contentType: 'application/json; charset=UTF-8',
 					complete: onDosfReqSendDwldCdComplete,
@@ -353,9 +359,9 @@
 					$('#jgb-eqmat-admin .eqmnt-buttons').show();
 					$('#jgb-eqmat-admin .main-content').show();
 				} else {
-					$('eqmnt-item-add-edit .notice.notice-error').text(emmpAddNewSentTryErrorCondMsg);
-					if( $('eqmnt-item-add-edit .notice.notice-error').hasClass('hidden') ){
-						$('eqmnt-item-add-edit .notice.notice-error').removeClass('hidden')
+					$('.eqmnt-item-add-edit .notice.notice-error').text(emmpAddNewSentTryErrorCondMsg);
+					if( $('.eqmnt-item-add-edit .notice.notice-error').hasClass('hidden') ){
+						$('.eqmnt-item-add-edit .notice.notice-error').removeClass('hidden')
 					}
 				}
 			}
@@ -423,12 +429,12 @@
 					},
 					success: function(  data,  textStatus,  jqXHR ){
 
-						if( data['emmpAddNew_post_status'] == 'ok' ^ data['dosfUpdate_post_status'] == 'ok'){
+						if( data['emmp_post_status'] == 'ok' ^ data['emmp_update_status'] == 'ok'){
 							emmpAddNewSentTryErrorCondMsg = '';
 							dttbl.ajax.reload();
 						}
 		
-						if( data['emmpAddNew_post_status'] == 'error' && data['err_code'] == '403' ){
+						if( data['emmp_post_status'] == 'error' && data['err_code'] == '403' ){
 							emmpAddNewSentTryErrorCondMsg = 'Ya existe un proceso de mantención con el mismo número de serie.'
 						}
 						

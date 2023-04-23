@@ -356,7 +356,7 @@ class Jgb_EqMat_Admin {
             $where .= ' OR model LIKE "%' . $search_value . '%"';
             $where .= ' OR emails LIKE "%' . $search_value . '%" )';
         } else {
-			$where  = ' WHERE deleted != 0';
+			$where  = ' WHERE deleted = 0';
 		}
 		return $where;
 	}
@@ -527,7 +527,7 @@ class Jgb_EqMat_Admin {
 
 			return [
 				'emmp_operation'		   		=> 'UPDATE',
-				'emmp_update_status' 	   		=> $upd_res,
+				'emmp_update_status' 	   		=> $upd_res > 0 ? 'ok' : 'error',
 				'emmp_change_status_email_sent'	=> $mail_sent_res
 			];
 
@@ -656,7 +656,7 @@ class Jgb_EqMat_Admin {
 			);
 
 			$content = str_replace(
-				'{et_delivery}',
+				'{model}',
 				$emmp->model,
 				$content
 			);
@@ -686,9 +686,19 @@ class Jgb_EqMat_Admin {
 
 	public function receive_send_cur_status_req(WP_REST_Request $r){
 		$res = [];
-		$res['receipt_data'] = $r;
+		
 		$res['error'] = true;
 		$res['sent_cur_status'] = false;
+		$res['eqpmt_id'] = $r->get_url_params()['eqpmt_id'];
+		if( !is_null ($res['eqpmt_id']) ){
+			$res['sent_cur_status'] = $this->send_current_status_email( $res['eqpmt_id'] );
+			if( $res['sent_cur_status'] ){
+				$res['error'] = false;
+			} else {
+				$res['error'] = true;
+				$res['error_msg'] = 'Ocurrió un error mientras se intentaba hacer el envío de email';
+			}
+		}
 		return new WP_REST_Response( $res );
 	}
 
