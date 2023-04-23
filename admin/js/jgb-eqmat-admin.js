@@ -92,7 +92,7 @@
 		const bluckUICOnfig = { css: { backgroundColor: '#f00', color: '#fff', 'border-radius': '10px', padding: '10px 0px' }, message: 'Procesando la solicitud...' };
 
 		let currentEditionEmmpId;
-		let currentEditionDosfTR;
+		let currentEditionEmmpTR;
 		let emmpAddNewSentTryErrorCondMsg = '';
 		let delConfirmtnDlg;
 		let istr; // Ids to remove.
@@ -303,25 +303,25 @@
 			}
 
 			function dumpDataToEmmpAddFields(){
-				let cell = $(currentEditionDosfTR).children()[1]; //serie
+				let cell = $(currentEditionEmmpTR).children()[1]; //serie
 				let vl 	 = $(cell).text();
 				$( '#eqmnt-serie' ).val(vl);
 
-				cell = $(currentEditionDosfTR).children()[2]; //model
+				cell = $(currentEditionEmmpTR).children()[2]; //model
 				vl 	 = $(cell).text();
 				$( '#eqmnt-model' ).val(vl);
 
-				cell = $(currentEditionDosfTR).children()[3]; //et_delivery
+				cell = $(currentEditionEmmpTR).children()[3]; //et_delivery
 				vl 	 = $(cell).text();
 				$( '#eqmnt-et-delivery' ).val(vl);
 
-				cell = $(currentEditionDosfTR).children()[4]; //emails
+				cell = $(currentEditionEmmpTR).children()[4]; //emails
 				vl 	 = $(cell).text().split(',');
 				choiceEmls.clearStore();
 				choiceEmls.setValue(vl);
 
 
-				vl = $(currentEditionDosfTR).data('emmp-raw-status'); //status
+				vl = $(currentEditionEmmpTR).data('emmp-raw-status'); //status
 				$('#eqmnt-status option[value="'+vl+'"]').prop('selected', true);
 				
 				if( !$('.eqmnt-item-add-edit .notice.notice-error').hasClass('hidden') ){
@@ -341,8 +341,8 @@
 
 			function setWidgetsForEmmpEdition(){
 
-				currentEditionDosfTR = $(this).closest('tr');
-				currentEditionEmmpId = $(currentEditionDosfTR).attr('id');
+				currentEditionEmmpTR = $(this).closest('tr');
+				currentEditionEmmpId = $(currentEditionEmmpTR).attr('id');
 				$('.eqmnt-item-add-edit > .title').text('Modificando manteción de equipo/vehículo con ID interno ' + currentEditionEmmpId + '.');
 				$('#jgb-eqmat-admin .eqmnt-buttons').hide();
 				$('#jgb-eqmat-admin .main-content').hide();
