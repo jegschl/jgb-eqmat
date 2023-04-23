@@ -385,7 +385,7 @@
 				}
 			}
 
-			$('#rem-dosf').click(function(evn){
+			$('#rem-eqmnt').click(function(evn){
 				evn.preventDefault();
 
 				if( !$(this).hasClass('disabled') ){
