@@ -468,111 +468,93 @@ class Jgb_EqMat_Admin {
         return $response;
 	}
 
-	
+	public function get_current_emmp_status( int $emmp_id ){
+		global $wpdb;
+		$res = [];
+		$res['error'] = true;
+
+		$tbl_nm_emmp = $wpdb->prefix . 'eqmat_processes';
+
+		$isql = "SELECT `status` FROM $tbl_nm_emmp WHERE id=$emmp_id";
+
+		$r = $wpdb->get_row($isql);
+
+		if( !is_null($r) ){
+			$res['error'] = false;
+			$res['equipment_maintenance_status'] = $r->status;
+		} else {
+			$res['error_msg'] = $wpdb->last_error;
+		}
+
+		return $res;
+	}
 
 	public function receive_eqpmt_creation_request($r){
 		$data = $r->get_json_params();
 		// validaciones del lado del server.
 		global $wpdb;
-		$tbl_nm_shared_objs = $wpdb->prefix . 'dosf_shared_objs';
-		$tbl_nm_so_ruts_links = $wpdb->prefix . 'dosf_so_ruts_links'; 
-
-		$mail_sent_res = null;
+		$tbl_nm_emmp = $wpdb->prefix . 'eqmat_processes';
 
 		if( isset( $data['updateId'] ) && !is_null( $data['updateId'] ) ){
 
-			$dowld_code = $this->generate_download_code();
+			$beforeUpdStts = $this->get_current_emmp_status($data['updateId']);
 			$upd_res = $wpdb->update(
-				$tbl_nm_shared_objs,
+				$tbl_nm_emmp,
 				array(
-					'title' 		 => $data['title'],
-					'file_name' 	 => $data['file_name'],
-					'wp_file_obj_id' => $data['wp_obj_file_id'],
-					'email'			 => implode(',',$data['email']),
-					'email2'		 => implode(',',$data['email2']),
-					'download_code'  => $dowld_code,
-					'emision'		 => $data['emision']
+					'serie' 		 => $data['serie'],
+					'model' 		 => $data['model'],
+					'et_delivery' 	 => $data['et-delivery'],
+					'emails'		 => implode(',',$data['emails']),
+					'status'		 => $data['status'],
+		
 				),
 				[ 'id' => $data['updateId'] ]
 			);
 
-			$wpdb->delete(
-				$tbl_nm_so_ruts_links,
-				['so_id' => intval( $data['updateId'] ) ]
-			);
-
-			foreach($data["linked_ruts"] as $rut){
-				$wpdb->insert(
-					$tbl_nm_so_ruts_links,
-					array(
-						'so_id' => intval( $data['updateId'] ),
-						'rut' 	=> $rut
-					)
-				);
+			$mail_sent_res = '';
+			if( $upd_res > 0 && ($beforeUpdStts != $data['status'])){
+				$mail_sent_res = $this->send_current_status_email($data['updateId']);
 			}
+			
 
 			return [
-				'dosf_operation'		 => 'UPDATE',
-				'dosfUpdate_post_status' => 'ok',
-				'dosfAddNew_email_sent'	 => $mail_sent_res
+				'emmp_operation'		   		=> 'UPDATE',
+				'emmp_update_status' 	   		=> $upd_res,
+				'emmp_change_status_email_sent'	=> $mail_sent_res
 			];
 
 		} else {
 
-			$options = get_option(JGB_EQMAT_OPT_NM_PLUS_OPTIONS);
-			if( isset( $options['use-serial-number'] ) && $options['use-serial-number'] ){
-				// Chequeo de existencia por número de serie:
-				if( $this->checkStoredMatchBySerialNumber( $data['title'] ) ){
-					return [
-						'dosf_operation'		 => 'INSERT',
-						'dosfAddNew_post_status' => 'error',
-						'err_code'				 => '403',
-						'err_msg'				 => 'Try duplicated serial'
-					];
-				}
+			
+			// Chequeo de existencia por número de serie:
+			if( $this->checkStoredMatchBySerialNumber( $data['serie'] ) ){
+				return [
+					'emmp_operation'		 => 'INSERT',
+					'emmp_post_status' 		 => 'error',
+					'err_code'				 => '403',
+					'err_msg'				 => 'Try duplicated serial'
+				];
 			}
+			
 		
-			$dowld_code = $this->generate_download_code();
 			$wpdb->insert(
-				$tbl_nm_shared_objs,
+				$tbl_nm_emmp,
 				array(
-					'title' 		 => $data['title'],
-					'file_name' 	 => $data['file_name'],
-					'wp_file_obj_id' => $data['wp_obj_file_id'],
-					'email'			 => implode(',',$data['email']),
-					'email2'		 => implode(',',$data['email2']),
-					'download_code'  => $dowld_code,
-					'emision'		 => $data['emision']
+					'serie' 		 => $data['serie'],
+					'model' 		 => $data['model'],
+					'et_delivery' 	 => $data['et-delivery'],
+					'emails'		 => implode(',',$data['emails']),
+					'status'		 => $data['status']
 				)
 			);
-			$so_id = $wpdb->insert_id;
-			if( $so_id !== false ){
-				foreach($data["linked_ruts"] as $rut){
-					$wpdb->insert(
-						$tbl_nm_so_ruts_links,
-						array(
-							'so_id' => intval($so_id),
-							'rut' 	=> $rut
-						)
-					);
-				}
-			} 
-			$wp_upload_dir_info = wp_upload_dir(); 
-			$attachment_id = intval($data['wp_obj_file_id']);
-			$file_path = get_attached_file($attachment_id);
-			$dce_args = array(
-							'email' => $data['email'],
-							'download_code' => $dowld_code,
-							'file' => $file_path
-						);
-
-
-			$mail_sent_res = $this->send_download_code_email($dce_args);
+			$emmp_id = $wpdb->insert_id;
+			
+			$mail_sent_res = $this->send_current_status_email($emmp_id);
 
 			return [
-				'dosf_operation'		 => 'INSERT',
-				'dosfAddNew_post_status' => 'ok',
-				'dosfAddNew_email_sent'	 => $mail_sent_res
+				'emmp_operation'		 => 'INSERT',
+				'emmp_post_status' => 'ok',
+				'emmp_email_sent'	 => $mail_sent_res
 			];
 
 		}
@@ -582,12 +564,20 @@ class Jgb_EqMat_Admin {
 
 	public function checkStoredMatchBySerialNumber( $serial ){
 		global $wpdb;
-		$tbl_nm_shared_objs = $wpdb->prefix . 'dosf_shared_objs';
+		$tbl_nm_emmp = $wpdb->prefix . 'dosf_shared_objs';
 		$match_count = $wpdb->get_var("
 			SELECT COUNT(*)
-			FROM `$tbl_nm_shared_objs` 
+			FROM `$tbl_nm_emmp` 
 			WHERE `id` = \"$serial\"" );
 		return $match_count > 0 ? true : false;
+	}
+
+	public function send_current_status_email($emmp_id){
+		global $wpdb;
+
+		$dce_args = array(
+			'email' => $data['emails']
+		);
 	}
 
 	public function receive_send_cur_status_req($args){
@@ -598,17 +588,17 @@ class Jgb_EqMat_Admin {
 			return false;
 
 		$header_template_path = apply_filters(
-									'dosf_eml_tpl_new_obj_header',
+									'eqmat_eml_tpl_new_obj_header',
 									JGB_EQMAT_PLUGIN_PATH . '/templates/emails/email_header.tpl'
 								);
 		
 		$content_template_path = apply_filters(
-									'dosf_eml_tpl_new_obj_content_path',
+									'eqmat_eml_tpl_new_obj_content_path',
 									JGB_EQMAT_PLUGIN_PATH . '/templates/emails/email_new_dosf_content.tpl'
 								);
 
 		$footer_template_path = apply_filters(
-									'dosf_eml_tpl_new_obj_footer',
+									'eqmat_eml_tpl_new_obj_footer',
 									JGB_EQMAT_PLUGIN_PATH . '/templates/emails/email_footer.tpl'
 								);
 
@@ -629,13 +619,13 @@ class Jgb_EqMat_Admin {
 							$content
 						);
 			$subject = apply_filters(
-							'dosf_eml_new_obj_eml_subject',
+							'eqmat_eml_new_obj_eml_subject',
 							'Grua PM :: Código de descarga de certificado de mantención'
 						);
 
 			$header = array('Content-Type: text/html; charset=UTF-8');
 			$header = apply_filters(
-						'dosf_eml_new_obj_eml_header',
+						'eqmat_eml_new_obj_eml_header',
 						$header
 					);
 			
