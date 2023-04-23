@@ -65,7 +65,7 @@ class Jgb_EqMat_Admin {
 		add_action('jgb-eqmat-admin/main-content',[$this,'hrd_main_content']);
 		add_action('jgb-eqmat-admin/content-header',[$this,'hrd_header_buttons']);
 		add_action('jgb-eqmat-admin/before-content',[$this,'hrd_add_edt_frm']);
-	
+		add_Action('jgb-eqmat-admin/content-header',[$this,'hrd_del_confirm_dlg']);
 	}
 
 	/**
@@ -257,6 +257,13 @@ class Jgb_EqMat_Admin {
         include $path;
 	}
 
+	public function hrd_del_confirm_dlg(){
+
+		$path = __DIR__ . '/partials/html-eqmnt-rem-conf-dlg.php';
+
+		include $path;
+	}
+
     public function set_endpoints(){
         register_rest_route(
             JGB_EQMAT_APIREST_BASE_ROUTE,
@@ -333,15 +340,23 @@ class Jgb_EqMat_Admin {
 		$ta = [];
 		if( count( $ids_to_remove ) ){
 			foreach( $ids_to_remove as $id ){
-				// Eliminando ruts.
-				$ta['del-rut-res'] = $wpdb->delete('jgb-eqmat_so_ruts_links',['so_id' => $id]);
-				if( $ta['del-rut-res'] === false ){
-					$ta['del-rut-res-err'] = $wpdb->last_error;
+				$upd_res = $wpdb->update(
+					$this->tbl_nm_emmp,
+					array(
+						'deleted' 		 => 1			
+					),
+					[ 'id' => $id ]
+				);
+	
+				
+				if( $upd_res > 0 ){
+					$ta['del-emmp-res'] = true;
+				} else {
+					$ta['del-emmp-res'] = false;
+					$ta['del-emmp-res-err'] = $wpdb->last_error;
 				}
-				$ta['del-dosf-res'] = $wpdb->delete('jgb-eqmat_shared_objs',['id' => $id]);
-				if( $ta['del-dosf-res'] === false ){
-					$ta['del-dosf-res-err'] = $wpdb->last_error;
-				}
+
+				
 				$res['details'][$id] = $ta;
 			}
 		}

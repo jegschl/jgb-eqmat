@@ -182,7 +182,7 @@
 						text: 'Si, eliminar',
 						click: function(){
 							$.blockUI(bluckUICOnfig); 
-							sendDosfRemovRequest();
+							sendEmmpRemovRequest();
 							$( this ).dialog( "close" );
 							
 						}
@@ -201,7 +201,7 @@
 
 				const itemActionReqRemoveCodeSelector = '.action.remove-em-mp';
 				$(itemActionReqRemoveCodeSelector).off('click');
-				$(itemActionReqRemoveCodeSelector).on('click',dttblItemActionReqRemoveDosf);
+				$(itemActionReqRemoveCodeSelector).on('click',dttblItemActionReqRemoveEmmp);
 
 				const itemDosfCheckerSelector = '.em-mp-checker';
 				$(itemDosfCheckerSelector).off('click');
@@ -234,7 +234,7 @@
 				}
 			}
 
-			function sendDosfRemovRequest(){
+			function sendEmmpRemovRequest(){
 				const ac = {
 					method: 'DELETE',
 					url: JGB_EQMAT.urlEquipments,
@@ -251,7 +251,7 @@
 				$.ajax(ac);
 			}
 
-			function dttblItemActionReqRemoveDosf(){
+			function dttblItemActionReqRemoveEmmp(){
 				istr = [ $(this).closest('tr').attr('id') ];
 				delConfirmtnDlg.dialog('open');
 			}
