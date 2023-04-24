@@ -306,7 +306,7 @@
 				$( '#eqmnt-serie' ).val('');
 				$( '#eqmnt-model').val(''),
 				$( '#eqmnt-et-delivery' ).val('');
-				$( '#eqmnt-ruts' ).text(''),
+				$( '#eqmnt-active' ).prop('checked', true),
 				choiceEmls.clearStore();
 
 				
