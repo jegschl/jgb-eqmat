@@ -62,6 +62,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 					>
 				</div>
 
+				<div class="fld-active">
+					<label for="eqmnt-active">Visible en las búsquedas</label>
+					<input
+						type="checkbox"
+						id="eqmnt-active"
+						name="eqmnt-active"
+					>
+				</div>
+
 			</div>
 			<div class="actions-wrapper">
 				<div class="save"><button>Guardar</button></div>

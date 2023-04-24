@@ -119,7 +119,7 @@
 .msg-indicator .status.LPE{
     color: green;
 }
-.msg-indicator .status.MEP{
+.msg-indicator .status.EPM{
     color: blue;
 }
 .emmp-search-no-res-wrapper {
@@ -128,5 +128,18 @@
     font-weight: 700;
     padding: 40px;
     font-size: 30px;
-  }
+}
+.emmp-search-res-row .details{
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+.emmp-search-res-row .detail-item label, 
+.emmp-search-res-row .detail-item .value{
+    display: inline-block;
+    font-size: 12px;
+}
+.emmp-search-res-row .detail-item .value{
+    font-weight: 500;
+}
 

@@ -63,6 +63,18 @@
         return data;
 	}
 
+	function actions_data_active( data, type ){
+		if (type === 'display') {
+            if(data == 1 ) {
+				return 'Si';
+			} else {
+				return 'No';
+			}
+        }
+         
+        return data;
+	}
+
 	function actions_data_render(data, type){
 		if (type === 'display') {
 			var output = '';
@@ -141,7 +153,8 @@
 
 		dtColumns.push(
 			{
-				data: 'active'
+				data: 'active',
+				render: actions_data_active
 			}
 		);
 		
@@ -408,6 +421,7 @@
 					'et-delivery':		$('#eqmnt-et-delivery').val(),
 					'status'	 : 		$('#eqmnt-status').val(),
 					'emails'	 : 		choiceEmls.getValue(true),
+					'active'	 :		$('#eqmnt-active').is(':checked'),
 					'updateId'	 : 		currentEditionEmmpId 
 				};
 

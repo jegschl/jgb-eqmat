@@ -529,7 +529,7 @@ class Jgb_EqMat_Admin {
 					'et_delivery' 	 => $data['et-delivery'],
 					'emails'		 => implode(',',$data['emails']),
 					'status'		 => $data['status'],
-		
+					'active'		 => $data['active'] ? 1 : 0
 				),
 				[ 'id' => $data['updateId'] ]
 			);
@@ -567,7 +567,8 @@ class Jgb_EqMat_Admin {
 					'model' 		 => $data['model'],
 					'et_delivery' 	 => $data['et-delivery'],
 					'emails'		 => implode(',',$data['emails']),
-					'status'		 => $data['status']
+					'status'		 => $data['status'],
+					'active'		 => $data['active'] ? 1 : 0
 				)
 			);
 			$emmp_id = $wpdb->insert_id;
@@ -576,8 +577,8 @@ class Jgb_EqMat_Admin {
 
 			return [
 				'emmp_operation'		 => 'INSERT',
-				'emmp_post_status' => 'ok',
-				'emmp_email_sent'	 => $mail_sent_res
+				'emmp_post_status' 		 => 'ok',
+				'emmp_email_sent'	 	 => $mail_sent_res
 			];
 
 		}
