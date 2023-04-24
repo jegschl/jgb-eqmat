@@ -41,52 +41,21 @@ class Jgb_EqMat_Activator {
 
 	public static function initialize_tables(){
 		global $wpdb;
-		$tbl_nm_shared_objs = $wpdb->prefix . 'eqmat_shared_objs';
-		$tbl_nm_so_ruts_links = $wpdb->prefix . 'eqmat_so_ruts_links';
-		$charset_collate = $wpdb->get_charset_collate();
-		$isql_initialize_tables = "CREATE TABLE IF NOT EXISTS $tbl_nm_shared_objs (
-			id INT UNSIGNED NOT NULL,
-			title varchar(256) NOT NULL,
-			emision datetime DEFAULT NULL,
-			file_name varchar(256) NOT NULL,
-			wp_file_obj_id INT UNSIGNED NULL,
-			created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-			email varchar(255)  NOT NULL,
-			email2 varchar(255)  NOT NULL,
-  			download_code varchar(16) NOT NULL
-		) $charset_collate";
+
+		$isql_initialize_tables = "CREATE TABLE IF NOT EXISTS `wp_eqmat_processes` (
+			`id` bigint unsigned NOT NULL AUTO_INCREMENT,
+			`serie` varchar(16) COLLATE utf8mb4_general_ci NOT NULL,
+			`et_delivery` date NOT NULL,
+			`status` enum('EPM','LPE') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'EPM' COMMENT 'EPM: en proceso de mantención. LPE: Lista para entrega.',
+			`emails` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+			`model` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+			`deleted` tinyint(1) NOT NULL DEFAULT '0',
+			`active` tinyint(1) NOT NULL DEFAULT '1',
+			UNIQUE KEY `wp_eqmat_processes_id_IDX` (`id`) USING BTREE
+		  );";
+		
 		$wpdb->query( $isql_initialize_tables );
 
-		$isql_initialize_tables = "CREATE UNIQUE INDEX ".$tbl_nm_shared_objs."_id_IDX USING BTREE ON $tbl_nm_shared_objs (id)";
-		$wpdb->query( $isql_initialize_tables );
-
-		$isql_initialize_tables = "CREATE INDEX ".$tbl_nm_shared_objs."_title_IDX USING BTREE ON $tbl_nm_shared_objs (title,id)";
-		$wpdb->query( $isql_initialize_tables );
-
-		$isql_initialize_tables = "CREATE INDEX ".$tbl_nm_shared_objs."_file_name_IDX USING BTREE ON $tbl_nm_shared_objs (file_name,id)";
-		$wpdb->query( $isql_initialize_tables );
-
-		$isql_initialize_tables = "ALTER TABLE $tbl_nm_shared_objs MODIFY COLUMN id int unsigned auto_increment NOT NULL";
-		$wpdb->query( $isql_initialize_tables );
-
-
-
-		$isql_initialize_tables = "CREATE TABLE IF NOT EXISTS $tbl_nm_so_ruts_links (
-			id INT UNSIGNED NOT NULL,
-			so_id INT UNSIGNED NOT NULL,
-			rut varchar(13) NOT NULL,
-			created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
-		) $charset_collate";
-		$wpdb->query( $isql_initialize_tables );
-
-		$isql_initialize_tables = "CREATE UNIQUE INDEX ".$tbl_nm_so_ruts_links."_id_IDX USING BTREE ON $tbl_nm_so_ruts_links (id)";
-		$wpdb->query( $isql_initialize_tables );
-
-		$isql_initialize_tables = "CREATE INDEX ".$tbl_nm_so_ruts_links."_soId_IDX USING BTREE ON $tbl_nm_so_ruts_links (so_id,id,rut)";
-		$wpdb->query( $isql_initialize_tables );
-
-		$isql_initialize_tables = "ALTER TABLE $tbl_nm_so_ruts_links MODIFY COLUMN id int unsigned auto_increment NOT NULL";
-		$wpdb->query( $isql_initialize_tables );
 	}
 
 }
