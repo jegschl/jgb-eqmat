@@ -219,6 +219,8 @@
 				const itemDosfCheckerSelector = '.em-mp-checker';
 				$(itemDosfCheckerSelector).off('click');
 				$(itemDosfCheckerSelector).on('click',dttblItemEmmpChecker);
+
+				dttblItemEmmpChecker();
 			}
 
 			function dttblItemEmmpChecker(){
