@@ -367,7 +367,7 @@ class Jgb_EqMat_Admin {
 
 	public function get_eqpmnt_mp_where($search_value = null){
 		if(isset($search_value) && !empty($search_value)){
-            $where  = ' WHERE deleted != 0 AND ( serie LIKE "%'. $search_value . '%"';
+            $where  = ' WHERE deleted = 0 AND ( serie LIKE "%'. $search_value . '%"';
             $where .= ' OR model LIKE "%' . $search_value . '%"';
             $where .= ' OR emails LIKE "%' . $search_value . '%" )';
         } else {
