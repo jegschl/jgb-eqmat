@@ -166,7 +166,8 @@ class Jgb_EqMat_Admin {
 			'JGB_EQMAT',
 			array(
 				'urlEquipments'		 => rest_url( '/'. JGB_EQMAT_APIREST_BASE_ROUTE . JGB_EQMAT_URI_ID_EQUIPMENTS . '/' ),
-				'baseUrlSendStatus'	 => rest_url( '/'. JGB_EQMAT_APIREST_BASE_ROUTE . JGB_EQMAT_URI_ID_SEND_CUR_STATUS . '/')
+				'baseUrlSendStatus'	 => rest_url( '/'. JGB_EQMAT_APIREST_BASE_ROUTE . JGB_EQMAT_URI_ID_SEND_CUR_STATUS . '/'),
+				'jobStatuses'		 => EqmatHelper::get_job_order_statuses_list()
 			) 
 		);
 		
@@ -648,15 +649,7 @@ class Jgb_EqMat_Admin {
 							$content
 						);
 
-			switch ($emmp->status) {
-				case 'LPE':
-					$vtr = 'Listo para entrega';
-					break;
-				
-				default:
-					$vtr = 'En proceso';
-					break;
-			}
+			$vtr = EqmatHelper::job_order_status( $emmp->status );
 			
 			$content = str_replace(
 							'{status}',

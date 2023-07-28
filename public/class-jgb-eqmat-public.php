@@ -139,15 +139,8 @@ class Jgb_EqMat_Public {
 			</div>
 			<?php
 			if(!is_null($res) && !empty($res)){
-				switch( $res->status ){
-					case 'LPE':
-						$status = 'Lista para entrega';
-						break;
-
-					default:
-						$status = 'Mantención en proceso';
-						break;
-				}
+				
+				$status = EqmatHelper::job_order_status( $res->status );
 				
 				$fdee = (new DateTime($res->et_delivery))->format('d-m-Y');
 				?>

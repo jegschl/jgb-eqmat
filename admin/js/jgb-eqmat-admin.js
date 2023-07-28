@@ -44,20 +44,18 @@
         return data;
     }
 
-	function actions_data_status(data, type){
-		if (type === 'display') {
-            let msg = '';
-            switch (data) {
-				case 'LPE':
-					msg = 'Lista para entrega';
-					break;
-			
-				default: // EPM
-					msg = 'Mantención en proceso';
-					break;
-			}
+	function getJOSttsTextByCode(sttsCode){
+		let sttsTxt = JGB_EQMAT.jobStatuses[sttsCode];
+		if( sttsTxt == undefined ){
+			sttsTxt = 'RECEPCIONADO';
+		}
 
-            return msg;
+		return sttsTxt;
+	}
+
+	function actions_data_status(data, type){
+		if (type === 'display') {        
+            return getJOSttsTextByCode( data );
         }
          
         return data;

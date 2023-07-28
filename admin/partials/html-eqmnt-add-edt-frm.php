@@ -47,8 +47,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						id="eqmnt-status"
 						name="eqmnt-status"
 					>
-						<option value="EPM">En proceso</option>
-						<option value="LPE">Listo para entrega</option>
+						<?php foreach( EqmatHelper::get_job_order_statuses_list() as $k => $jos ): ?>
+						<option value="<?= $k ?>"><?= $jos ?></option>
+						<?php endforeach; ?>
 					</select>
 				</div>
 				

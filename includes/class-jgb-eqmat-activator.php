@@ -46,7 +46,7 @@ class Jgb_EqMat_Activator {
 			`id` bigint unsigned NOT NULL AUTO_INCREMENT,
 			`serie` varchar(16) COLLATE utf8mb4_general_ci NOT NULL,
 			`et_delivery` date NOT NULL,
-			`status` enum('EPM','LPE') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'EPM' COMMENT 'EPM: en proceso de mantención. LPE: Lista para entrega.',
+			`status` enum('EPM','LPE','REC','EIL','PMT','EVL','EOC') NOT NULL DEFAULT 'REC' COMMENT 'EPM: en proceso de reparación/mantención. LPE: Lista para entrega. REC: Recepcionado. EIL: En espera de ingreso a línea. PMT: En proceso de montaje. EVL: En proceso de evaluación. EOC: En espera orden de compra.',
 			`emails` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
 			`model` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
 			`deleted` tinyint(1) NOT NULL DEFAULT '0',
