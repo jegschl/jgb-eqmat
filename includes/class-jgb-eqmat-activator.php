@@ -42,7 +42,8 @@ class Jgb_EqMat_Activator {
 	public static function initialize_tables(){
 		global $wpdb;
 
-		$isql_initialize_tables = "CREATE TABLE IF NOT EXISTS `wp_eqmat_processes` (
+		$tbl_nm = $wpdb->prefix . 'eqmat_processes';
+		$isql_initialize_tables = "CREATE TABLE IF NOT EXISTS `{$tbl_nm}` (
 			`id` bigint unsigned NOT NULL AUTO_INCREMENT,
 			`serie` varchar(16) COLLATE utf8mb4_general_ci NOT NULL,
 			`et_delivery` date NOT NULL,
@@ -51,7 +52,7 @@ class Jgb_EqMat_Activator {
 			`model` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
 			`deleted` tinyint(1) NOT NULL DEFAULT '0',
 			`active` tinyint(1) NOT NULL DEFAULT '1',
-			UNIQUE KEY `wp_eqmat_processes_id_IDX` (`id`) USING BTREE
+			UNIQUE KEY `{$tbl_nm}_id_IDX` (`id`) USING BTREE
 		  );";
 		
 		$wpdb->query( $isql_initialize_tables );

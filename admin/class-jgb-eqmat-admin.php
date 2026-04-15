@@ -384,7 +384,7 @@ class Jgb_EqMat_Admin {
 
 		$isql = "SELECT SQL_CALC_FOUND_ROWS
 					*
-				FROM wp_eqmat_processes wep 
+				FROM {$this->tbl_nm_emmp} wep 
 				
 				$where";
 
@@ -428,7 +428,7 @@ class Jgb_EqMat_Admin {
 		$order = $this->get_eqpmnt_mp_orderby($prmtrs['order']);
 
 		$isql = "SELECT *
-				 FROM wp_eqmat_processes wep 
+				 FROM {$this->tbl_nm_emmp} wep 
 				 $where
 				 $order
 				 $limit";
